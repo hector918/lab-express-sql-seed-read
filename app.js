@@ -6,7 +6,6 @@ const app = express();
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 
-const oneDay = 1000 * 60 * 60 * 24;
 app.use(sessions({
   secret: 'sessionsecret123593405843059',
   resave: false,
@@ -18,7 +17,7 @@ app.use(express.static("./frontend/starter-pern-crud/build"));
 
 function auth(req, res, next) {
   // Checking for the session
-  console.log(req.session,req.sessionID,req.session.username);
+  console.log(req.sessionID,req.session.username);
   if(!req.session.username)
   {
     res.status(401).redirect('/');
@@ -33,8 +32,8 @@ function auth(req, res, next) {
 
 /////////////////////////////////////////////
 app.post('/songs/login/',(req,res) => {
-  console.log("set username")
   let {name} = req.body;
+  name = name?.replace(/[^a-zA-Z\d\s]+/gm,"");
 
   if(req.session.username){//如果 已经有名
     res.json({success:"true",name:req.session.username});

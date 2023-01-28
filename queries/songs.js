@@ -38,10 +38,10 @@ const getAllSongsAlbumsArtist = async ()=>{
 const getAllSongs = async () => {
   try {
     const allSongs = await db.any(`SELECT songs.id,songs.name,artists.name as artist,albums.name as album,albums.time,albums.id as album_id,artists.id as artist_id FROM songs 
-    INNER JOIN artist_link_to_song ON artist_link_to_song.song_id = songs.id 
-    INNER JOIN artists ON artist_link_to_song.artist_id = artists.id
-    INNER JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
-    INNER JOIN albums ON album_link_to_song.album_id = albums.id`,);
+    LEFT JOIN artist_link_to_song ON artist_link_to_song.song_id = songs.id 
+    LEFT JOIN artists ON artist_link_to_song.artist_id = artists.id
+    LEFT JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
+    LEFT JOIN albums ON album_link_to_song.album_id = albums.id`,);
     return allSongs;
   } catch (error) {
     throw error;
@@ -51,10 +51,10 @@ const getAllSongs = async () => {
 const getSong = async (id) => {
   try {
     const oneSong = await db.oneOrNone(`SELECT songs.id,songs.name,artists.name as artist,albums.name as album,albums.time,albums.id as album_id,artists.id as artist_id FROM songs 
-    INNER JOIN artist_link_to_song ON artist_link_to_song.song_id = songs.id 
-    INNER JOIN artists ON artist_link_to_song.artist_id = artists.id
-    INNER JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
-    INNER JOIN albums ON album_link_to_song.album_id = albums.id
+    LEFT JOIN artist_link_to_song ON artist_link_to_song.song_id = songs.id 
+    LEFT JOIN artists ON artist_link_to_song.artist_id = artists.id
+    LEFT JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
+    LEFT JOIN albums ON album_link_to_song.album_id = albums.id
     WHERE songs.id = $[id]`,{id});
     return oneSong;
   } catch (error) {
