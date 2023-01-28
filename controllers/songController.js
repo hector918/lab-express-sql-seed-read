@@ -72,5 +72,96 @@ songs.put("/:id", async (req, res) => {
     res.status(404).json({ error });
   }
 });
-
+////////////////////////////////////////////////////////////////////
+const { createAlbum,updateAlbum,deleteAlbum,addSongToAlbum } = require("../queries/albums");
+songs.put("/albums/:id", async (req, res)=>{
+  try {
+    const {id} = req.params;
+    let album = req.body;
+    album = await updateAlbum(id, album);
+    if(!album) throw "id not found";
+    else res.json(album);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
+// CREATE
+songs.post("/albums",  async (req, res) => {
+  try {
+    const album = await createAlbum(req.body);
+    res.json(album);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
+// DELETE
+songs.delete("/albums/:id", async (req, res) => {
+  try {
+    const {id} = req.params;
+    const album = await deleteAlbum(id);
+    if(!album) throw "id not found"
+    else res.json(album);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+});
+// CREATE
+songs.post(`/albums/add_songs/:id`,  async (req, res) => {
+  try {
+    const {id} = req.params;
+    const album = await addSongToAlbum(id,req.body);
+    res.json(album);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
+////////////////////////////////////////////////////////////////////
+const { createArtist,updateArtist,deleteArtist,addSongToArtist } = require("../queries/artists");
+songs.put("/artists/:id", async (req, res)=>{
+  try {
+    const {id} = req.params;
+    let artist = req.body;
+    artist = await updateArtist(id, artist);
+    if(!artist) throw "id not found";
+    else res.json(artist);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
+// CREATE
+songs.post("/artists",  async (req, res) => {
+  try {
+    const artist = await createArtist(req.body);
+    res.json(artist);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
+// DELETE
+songs.delete("/artists/:id", async (req, res) => {
+  try {
+    const {id} = req.params;
+    const artist = await deleteArtist(id);
+    if(!artist) throw "id not found"
+    else res.json(artist);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+});
+// CREATE
+songs.post(`/artists/add_songs/:id`,  async (req, res) => {
+  try {
+    const {id} = req.params;
+    const artist = await addSongToArtist(id,req.body);
+    res.json(artist);
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({ error });
+  }
+});
 module.exports = songs;

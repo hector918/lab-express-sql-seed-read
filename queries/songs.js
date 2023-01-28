@@ -1,5 +1,40 @@
 const db = require("../db/dbConfig.js");
 
+/*
+const getAllSongsAlbumsArtist = async ()=>{
+  db.task('get-user-events', async t => {
+    const songs = getAllSongs();
+    return {songs}
+  })
+  .then(data => {
+      return data;
+  })
+  .catch(error => {
+      // error
+      throw error;
+  });
+}
+*/
+
+/*
+`SELECT songs.id,songs.name,artists.name as artist,albums.name as album,albums.time,albums.id as album_id,artists.id as artist_id FROM songs 
+    INNER JOIN artist_link_to_song ON artist_link_to_song.song_id = songs.id 
+    INNER JOIN artists ON artist_link_to_song.artist_id = artists.id
+    INNER JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
+    INNER JOIN albums ON album_link_to_song.album_id = albums.id`
+*/
+
+/*
+`SELECT songs.id,songs.name
+    , string_agg(albums.name || ' (' || albums.time || ')',',') albums_name
+    , string_agg(artists.name,',') artists_name
+    FROM songs  
+    INNER JOIN album_link_to_song as alts on alts.song_id = songs.id
+    INNER JOIN albums on albums.id = alts.album_id
+    INNER JOIN artist_link_to_song as rlts on rlts.song_id = songs.id
+    INNER JOIN artists on artists.id = rlts.artist_id
+    group by songs.id,songs.name`
+*/
 const getAllSongs = async () => {
   try {
     const allSongs = await db.any(`SELECT songs.id,songs.name,artists.name as artist,albums.name as album,albums.time,albums.id as album_id,artists.id as artist_id FROM songs 
