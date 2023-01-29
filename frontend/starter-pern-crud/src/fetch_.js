@@ -219,7 +219,71 @@ function addSongToArtist(album_id,songs_id,cb)//POST
     .catch(error_handle);
 }
 /////////////////////////////////////////////////////////////////////
-
+function readPlaylists(text,cb)//get
+{
+  fetch(`${API}/playlists/${text||""}`,default_fetch_options)
+    .then(response=>response.json())
+    .then(data=>{cb(data)})
+    .catch(error_handle);
+}
+function setStarPlaylist(id,body,cb)//put
+{
+  let options = {
+    ...default_fetch_options,
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  fetch(`${API}/playlists/star/${id}`,options)
+    .then(response=>response.json())
+    .then(data=>{cb(data)})
+    .catch(error_handle);
+}
+function createPlaylist(body,cb)//post
+{
+  let options = {
+    ...default_fetch_options,
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  fetch(`${API}/playlists`,options)
+    .then(response=>response.json())
+    .then(data=>{cb(data)})
+    .catch(error_handle);
+}
+function deletePlaylist(id,cb)//delete
+{
+  let options = {
+    ...default_fetch_options,
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json'}
+  }
+  fetch(`${API}/playlists/${id}`,options)
+    .then(response=>response.json())
+    .then(data=>{cb(data)})
+    .catch(error_handle);
+}
+function addSongToPlaylist(songs,cb)//POST
+{
+  let options = {
+    ...default_fetch_options,
+    method: 'POST',
+    body: JSON.stringify(songs),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  fetch(`${API}/playlists/add_songs/`,options)
+    .then(response=>response.json())
+    .then(data=>{cb(data)})
+    .catch(error_handle);
+}
+/////////////////////////////////////////////////////////////////////
 export default{
   getUsername,
   login,
@@ -235,5 +299,10 @@ export default{
   updateArtist,
   createArtist,
   deleteArtist,
-  addSongToArtist
+  addSongToArtist,
+  readPlaylists,
+  createPlaylist,
+  addSongToPlaylist,
+  deletePlaylist,
+  setStarPlaylist
 }

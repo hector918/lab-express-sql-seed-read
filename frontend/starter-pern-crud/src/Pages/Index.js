@@ -5,13 +5,16 @@ import Artists from "../Components/artists";
 import srv from "../fetch_";
 import AlbumNewForm from "../Components/albumNewForm";
 import ArtistNewForm from "../Components/artistNewForm";
+import PlaylistNewForm from "../Components/playlistNewForm";
+
 import {get_all_selected_albums,get_all_selected_songs,get_all_selected_artists} from "../gerenal_func";
+import Playlists from "../Components/playlists";
 
 function Index() {
   const [songs_col_show, set_songs_col_show] = useState(true);
-  const [albums_col_show, set_albums_col_show] = useState(true);
+  const [albums_col_show, set_albums_col_show] = useState(false);
   const [artists_col_show, set_artists_col_show] = useState(false);
-  const [playlists_col_show, set_playlists_col_show] = useState(false);
+  const [playlists_col_show, set_playlists_col_show] = useState(true);
   const [songs, setSongs] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [artists, setArtists] = useState([]);
@@ -24,6 +27,7 @@ function Index() {
   const [playlistFormShow, setPlaylistFormShow] = useState(false);
 
   useEffect(() => {
+    //read songs album artist
     srv.read("",(data)=>{
       let [al,ar,so] = [{},{},{}];
 
@@ -59,11 +63,26 @@ function Index() {
       so = Object.values(so).map(el=>({...el, albums : Object.values(el.albums), artists : Object.values(el.artists)}));
       setSongs(so.sort((a,b)=>a.name>b.name?1:-1));
 
-      al = Object.values(al).map(el=>({...el,songs :Object.values(el.songs)}))
+      al = Object.values(al).map(el=>({...el,songs :Object.values(el.songs)}));
       setAlbums(al.sort((a,b)=>a.name>b.name?1:-1));
 
-      ar = Object.values(ar).map(el=>({...el,songs :Object.values(el.songs)}))
+      ar = Object.values(ar).map(el=>({...el,songs :Object.values(el.songs)}));
       setArtists(ar.sort((a,b)=>a.name>b.name?1:-1));
+    })
+    ///read playlist
+    srv.readPlaylists("",(data)=>{
+      let pl = {}
+      if(Array.isArray(data)) for(let x of data){
+        if(!pl[x.playlist_id]){
+          pl[x.playlist_id] = {id:x.playlist_id,name:x.name,songs:[],link_id:x.link_id,"is_favorite":x.is_favorite};
+        }
+        if(x.song_id!==null)
+        {
+          pl[x.playlist_id].songs.push({song_id:x.song_id,name:x.song_name,link_id:x.link_id,"is_favorite":x.is_favorite});
+        }
+      }
+      setPlaylists(Object.values(pl));
+      console.log(pl)
     })
   }, []);
 
@@ -75,7 +94,7 @@ function Index() {
     setArtistFormShow(true);
   }
   function on_new_playlist_click(evt){
-    //
+    setPlaylistFormShow(true);
   }
   function on_album_add_button_click(evt){
     let selected_songs = get_all_selected_songs();
@@ -213,10 +232,12 @@ function Index() {
               </div>            
             </div>
           </div>
+          <Playlists playlists={playlists} setplaylists={setPlaylists} playlistEditable={playlistEditable} songs={songs} albums={albums} artists={artists}/>
         </div>
       </div>
       {albumFormShow?<AlbumNewForm setmodalshow={setAlbumFormShow} setalbums={setAlbums}/>:""}
       {artistFormShow?<ArtistNewForm setmodalshow={setArtistFormShow} setartists={setArtists}/>:""}
+      {playlistFormShow?<PlaylistNewForm setmodalshow={setPlaylistFormShow} setplaylists={setPlaylists}/>:""}
     </div>
   );
 }

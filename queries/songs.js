@@ -56,6 +56,7 @@ const getSong = async (id) => {
     LEFT JOIN album_link_to_song ON album_link_to_song.song_id = songs.id
     LEFT JOIN albums ON album_link_to_song.album_id = albums.id
     WHERE songs.id = $[id]`,{id});
+
     return oneSong;
   } catch (error) {
     throw error;
@@ -99,8 +100,6 @@ const createSongCombine = async (song)=>{
   }
 }
 
-
-
 const createSong = async (song) => {
   const { name, artist, album, time, is_favorite } = song;
   try {
@@ -139,6 +138,5 @@ const updateSong = async (id, song) => {
   }
 };
 
-module.exports = { getAllSongs, getSong, createSong, deleteSong, updateSong,
-  createSongCombine,
+module.exports = { getAllSongs, getSong, createSong, deleteSong, updateSong, createSongCombine,
 };

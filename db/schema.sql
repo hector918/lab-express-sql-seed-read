@@ -42,6 +42,7 @@ CREATE TABLE playlist_link_to_song (
  id SERIAL PRIMARY KEY,
  playlist_id INT,
  song_id INT,
+ song_order INT,
  is_favorite BOOLEAN
 );
 

@@ -17,7 +17,7 @@ app.use(express.static("./frontend/starter-pern-crud/build"));
 
 function auth(req, res, next) {
   // Checking for the session
-  console.log(req.sessionID,req.session.username);
+  console.log(req.sessionID,req.session.username,req.originalUrl);
   if(!req.session.username)
   {
     res.status(401).redirect('/');
@@ -55,7 +55,9 @@ app.get("/", (req, res) => {
   res.send("Hello song world!");
 });
 /////////////////////////////////////////////
+app.use("/songs/playlists", require("./controllers/playlistController"));
 app.use("/songs", require("./controllers/songController"));
+
 /////////////////////////////////////////////
 app.get("*", (req, res) => {
   console.log(req.session,req.sessionID,"a")

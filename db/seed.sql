@@ -1,6 +1,6 @@
 \c tuner_dev;
 
-INSERT INTO songs (name, artist, album, time, is_favorite) VALUES
+INSERT INTO songs (name) VALUES
 ('All Because of You'),
 ('All I Want Is You'),
 ('Always'),
