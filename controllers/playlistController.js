@@ -9,7 +9,7 @@ playlists.get("/", async (req, res)=>{
   try {
     const username = req.session.username;
     if(!username) throw "username is undefined";
-    let playlists = await readPlaylists();
+    let playlists = await readPlaylists(-1,username);
     if(!playlists) throw "server error";
     else res.json(playlists);
   } catch (error) {

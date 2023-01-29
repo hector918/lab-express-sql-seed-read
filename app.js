@@ -12,6 +12,7 @@ app.use(sessions({
   saveUninitialized: true,
   cookie: { maxAge: 86400000 },//oneday
   store: new FileStore({}),
+  sameSite : "lax"
 }));
 app.use(express.static("./frontend/starter-pern-crud/build"));
 
