@@ -9,6 +9,7 @@ export default function Playlists({playlists, setplaylists, playlistEditable,son
   const [selectedAlbums, setSelectedAlbums] = useState({});
   const [selectedArtists, setSelectedArtists] = useState({});
 
+  console.log(playlists)
   function nodeslist_to_array(nodes){
     let ret = [];
     nodes.forEach(el=>{
@@ -79,7 +80,7 @@ export default function Playlists({playlists, setplaylists, playlistEditable,son
           </div>
           <div className="card-body">
             {el.songs.map((sel,sidx)=><p key={sidx}>
-              <span className="text-large c-hand" is_favorite={sel.is_favorite.toString()} link_id={sel.link_id} onClick={star_on_click}>{sel.is_favorite.toString()==="true"?"⭐":"★"}</span> {sel.name}
+              <span className="text-large c-hand" is_favorite={String(sel.is_favorite)==="true"?"true":"false"} link_id={sel.link_id} onClick={star_on_click}>{String(sel.is_favorite)==="true"?"⭐":"★"}</span> {sel.name}
             </p>)}
           </div>
           <div className="card-footer">
