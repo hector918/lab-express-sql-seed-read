@@ -3,7 +3,8 @@ const db = require("../db/dbConfig.js");
 const readPlaylists = async (ids,username=undefined) => {
   if (!username) throw "no user name";
   try {
-    const playlists = await db.any(`SELECT playlists.id as playlist_id,playlists.name,playlists.username,pllts.song_id,songs.name as song_name,pllts.song_order,pllts.id as link_id,pllts.is_favorite FROM playlists 
+    const playlists = await db.any(`
+    SELECT playlists.id as playlist_id,playlists.name,playlists.username,pllts.song_id,songs.name as song_name,pllts.song_order,pllts.id as link_id,pllts.is_favorite FROM playlists 
     LEFT JOIN playlist_link_to_song as pllts on playlists.id = pllts.playlist_id
     LEFT JOIN songs on songs.id = pllts.song_id 
     WHERE playlists.username = $[username]
